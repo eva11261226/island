@@ -1,0 +1,104 @@
+<include file="Public:header"/>
+<body class="user-select">
+<section class="container-fluid">
+    <include file="Public:top"/>
+    <div class="row">
+        <include file="Public:menu"/>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h1 class="page-header">产品列表<span class="badge">共{$count}个产品</span></h1>
+
+            <ol class="breadcrumb">
+                <li><a href="/Home/Project/add">
+                    <button class="btn btn-info">新增</button>
+                </a>
+
+                </li>
+            </ol>
+
+            <form action="/Home/Project/index" method="post" class="navbar-form " role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search_name" value="{$projectName}" autocomplete="off" placeholder="搜索产品" maxlength="15">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
+
+            <h1 class="page-header"></h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">产品名称</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">数量</span></th>
+                        <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
+                                class="visible-lg">规格</span></th>
+                        <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
+                                class="visible-lg">单位</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">备注</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">操作</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <foreach name="projectInfo" item="projects">
+                        <tr>
+                            <td align="center" class="article-title">{$projects['name']}</td>
+                            <td align="center">{$projects['number']}</td>
+                            <td align="center" class="hidden-sm">{$projects['standard']}</td>
+                            <td align="center" class="hidden-sm">{$projects['unit']}</td>
+                            <td align="center">{$projects['remark']}</td>
+                            <td align="center">
+                                <a href="/Home/Project/add/projectId/{$projects['id']}" style="color: blue">修改</a>
+                                <a href="/Home/Project/del/projectId/{$projects['id']}" style="color: red"
+                                   rel="1">删除</a>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+            {$page}
+
+
+
+                    <!--<ul class="pagination pagenav">-->
+                        <!--<li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>-->
+                        <!--<li class="active"><a href="/Home/Project/index">1</a></li>-->
+                        <!--<li><a href="/Home/Project/index/2">2</a></li>-->
+                        <!--<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a></li>-->
+                    <!--</ul>-->
+
+        </div>
+    </div>
+</section>
+<include file="Public:footer"/>
+<script>
+    //是否确认删除
+    $(function () {
+        $("#main table tbody tr td a").click(function () {
+            var name = $(this);
+            var id = name.attr("rel"); //对应id
+            if (event.srcElement.outerText == "删除") {
+                if (window.confirm("此操作不可逆，是否确认？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Article/delete",
+                        data: "id=" + id,
+                        cache: false, //不缓存此页面
+                        success: function (data) {
+                            window.location.reload();
+                        }
+                    });
+                }
+                ;
+            }
+            ;
+        });
+    });
+</script>
+</body>
+</html>

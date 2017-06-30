@@ -1,0 +1,82 @@
+<include file="Public:header"/>
+<body class="user-select">
+<section class="container-fluid">
+    <include file="Public:top"/>
+    <div class="row">
+        <include file="Public:menu"/>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h1 class="page-header">添加、修改经销商</h1>
+            <form action="/Home/Dealer/edit" method="post">
+                <div class="form-group">
+                    <label for="name">经销商名称</label>
+                    <input type="text" id="name" name="name" value="{$dealerInfo['name']}"
+                           class="form-control"
+                           required autocomplete="off">
+                    <!--<span class="prompt-text">这将是它在站点上显示的名字。</span>-->
+                </div>
+                <div class="form-group">
+                    <label for="contact_name">联系人姓名</label>
+                    <input type="text" id="contact_name" name="contact_name" value="{$dealerInfo['contact_name']}"
+                           class="form-control"
+                           required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="contact_tel">联系人电话</label>
+                    <input type="text" id="contact_tel" name="contact_tel" value="{$dealerInfo['contact_tel']}"
+                           class="form-control"
+                           required autocomplete="off">
+                </div>
+                <div>
+                    <label for="type">类型</label>
+                    <select id="type" name="type" class="form-control">
+                        <option value="1" <if condition="$dealerInfo['type'] eq 1">selected='selected'</if>>卖家</option>
+                        <option value="2" <if condition="$dealerInfo['type'] eq 2">selected='selected'</if>>买家</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="category-describe">备注</label>
+                    <textarea class="form-control" id="category-describe" name="remark" rows="4" autocomplete="off">{$dealerInfo['remark']}</textarea>
+                </div>
+                <input type="hidden" value="{$dealerInfo['id']}" name="dealerId"/>
+                <button class="btn btn-primary" type="submit" name="submit_1">更新</button>
+            </form>
+        </div>
+    </div>
+</section>
+<include file="Public:footer"/>
+
+<script>
+    $(function () {
+        $('form').bootstrapValidator({
+            message: '不能为空',
+            feedbackIcons: {
+                valid: 'glyphicon',
+                invalid: 'glyphicon',
+                validating: 'glyphicon'
+            },
+
+            fields: {
+                name: {
+                    message: '用户名验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        },
+
+                        remote: {
+                            url: '/Home/Dealer/getDealerName',//验证地址
+                            message: '用户已存在',//提示消息
+                            type: 'POST'//请求方式
+                        }
+                    }
+                }
+            }
+        });
+
+    })
+
+</script>
+</body>
+</html>

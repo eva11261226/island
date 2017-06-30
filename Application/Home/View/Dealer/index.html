@@ -1,0 +1,95 @@
+<include file="Public:header"/>
+<body class="user-select">
+<section class="container-fluid">
+    <include file="Public:top"/>
+    <div class="row">
+        <include file="Public:menu"/>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h1 class="page-header">经销商列表<span class="badge">共{$count}个经销商</span></h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/Home/Dealer/add">
+                        <button class="btn btn-info">新增</button>
+                    </a>
+                </li>
+            </ol>
+
+            <form action="/Home/Dealer/index" method="post" class="navbar-form " role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search_name" value="{$dealerName}" autocomplete="off" placeholder="搜索经销商" maxlength="15">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
+
+            <h1 class="page-header"></h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">名称</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">联系人姓名</span></th>
+                        <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
+                                class="visible-lg">联系人电话</span></th>
+                        <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
+                                class="visible-lg">类型</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">备注</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">操作</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <foreach name="dealerInfo" item="dealers">
+
+
+                        <tr <if condition="$dealers['type'] eq 1"> style="color: red"<else />style="color: green" </if>>
+                            <td align="center" class="article-title">{$dealers['name']}</td>
+                            <td align="center">{$dealers['contact_name']}</td>
+                            <td align="center" class="hidden-sm">{$dealers['contact_tel']}</td>
+                            <td align="center" class="hidden-sm"><if condition="$dealers['type'] eq 1">卖出<else />买入</if></td>
+                            <td align="center">{$dealers['remark']}</td>
+                            <td align="center">
+                                <a href="/Home/Dealer/add/dealerId/{$dealers['id']}" style="color: blue">修改</a>
+                                <a href="/Home/Dealer/del/dealerId/{$dealers['id']}" style="color: red"
+                                   rel="1">删除</a>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+            {$page}
+        </div>
+    </div>
+</section>
+<include file="Public:footer"/>
+<script>
+    //是否确认删除
+    $(function () {
+        $("#main table tbody tr td a").click(function () {
+            var name = $(this);
+            var id = name.attr("rel"); //对应id
+            if (event.srcElement.outerText == "删除") {
+                if (window.confirm("此操作不可逆，是否确认？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Article/delete",
+                        data: "id=" + id,
+                        cache: false, //不缓存此页面
+                        success: function (data) {
+                            window.location.reload();
+                        }
+                    });
+                }
+                ;
+            }
+            ;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<include file="Public:header"/>
+<body class="user-select">
+<section class="container-fluid">
+    <include file="Public:top"/>
+    <div class="row">
+        <include file="Public:menu"/>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h1 class="page-header">添加、修改产品</h1>
+            <form action="/Home/Project/edit" method="post">
+                <div class="form-group">
+                    <label for="category-name">产品名称</label>
+                    <input type="text" id="category-name" name="name" value="{$projectInfo['name']}"
+                           class="form-control"
+                           required autocomplete="off">
+                    <!--<span class="prompt-text">这将是它在站点上显示的名字。</span>-->
+                </div>
+                <div class="form-group">
+                    <label for="category-alias">产品规格</label>
+                    <input type="text" id="category-alias" name="standard" value="{$projectInfo['standard']}"
+                           class="form-control"
+                           required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="category-fname">最小单位</label>
+                    <select id="category-fname" class="form-control" name="unit">
+                        <foreach name="unitInfo" item="units">
+                            <option value="{$units['id']}"
+                            <if condition="$projectInfo['unit'] eq $units['id']">selected='selected'</if>
+                            >{$units['name']}</option>
+                        </foreach>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="category-describe">备注</label>
+                    <textarea class="form-control" id="category-describe" name="remark" rows="4" autocomplete="off">{$projectInfo['remark']}</textarea>
+                </div>
+                <input type="hidden" value="{$projectInfo['id']}" name="projectId"/>
+                <button class="btn btn-primary" type="submit" name="submit_1">更新</button>
+            </form>
+        </div>
+    </div>
+</section>
+<include file="Public:footer"/>
+
+<script>
+    $(function () {
+        $('form').bootstrapValidator({
+            message: '不能为空',
+            feedbackIcons: {
+                valid: 'glyphicon',
+                invalid: 'glyphicon',
+                validating: 'glyphicon'
+            },
+
+            fields: {
+                name: {
+                    message: '用户名验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        },
+
+                        remote: {
+                            url: '/Home/Project/getProjectName',//验证地址
+                            message: '用户已存在',//提示消息
+//                            delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                            type: 'POST'//请求方式
+                            /**自定义提交数据，默认值提交当前input value
+                             *  data: function(validator) {
+                               return {
+                                   password: $('[name="passwordNameAttributeInYourForm"]').val(),
+                                   whatever: $('[name="whateverNameAttributeInYourForm"]').val()
+                               };
+                            }
+                             */
+                        }
+
+                    }
+                }
+            }
+        });
+
+    })
+
+</script>
+</body>
+</html>
