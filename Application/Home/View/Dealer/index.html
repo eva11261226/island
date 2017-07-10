@@ -31,6 +31,8 @@
                         <th style="text-align: center;"><span class="glyphicon"></span> <span
                                 class="visible-lg">名称</span></th>
                         <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">公司地址</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
                                 class="visible-lg">联系人姓名</span></th>
                         <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
                                 class="visible-lg">联系人电话</span></th>
@@ -48,6 +50,7 @@
 
                         <tr <if condition="$dealers['type'] eq 1"> style="color: red"<else />style="color: green" </if>>
                             <td align="center" class="article-title">{$dealers['name']}</td>
+                            <td align="center">{$dealers['address']}</td>
                             <td align="center">{$dealers['contact_name']}</td>
                             <td align="center" class="hidden-sm">{$dealers['contact_tel']}</td>
                             <td align="center" class="hidden-sm"><if condition="$dealers['type'] eq 1">卖出<else />买入</if></td>
@@ -63,6 +66,7 @@
                 </table>
             </div>
             {$page}
+            <input type="hidden" id="page_type" value="dealer">
         </div>
     </div>
 </section>

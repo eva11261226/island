@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>进销存beta0.1管理系统</title>
-    <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="/Public/statics/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/style.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/login.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrapValidator.min.css">
@@ -57,19 +57,16 @@
     <div class="row">
         <aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
     <ul class="nav nav-sidebar">
-        <li class="active"><a href="/Home/Index/index">首页</a></li>
+        <li id="index" class="active"><a href="/Home/Index/index">首页</a></li>
     </ul>
     <ul class="nav nav-sidebar">
-        <li><a href="/Home/Project/index">产品汇总</a></li>
-        <li><a href="/Home/Sale/index">销货汇总</a></li>
-        <li><a class="dropdown-toggle" id="otherMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">销存汇总</a>
-            <ul class="dropdown-menu" aria-labelledby="otherMenu">
-                <li><a href="/Home/Sale/addSale">销售单</a></li>
-                <li><a data-toggle="modal" data-target="#areDeveloping">进货单</a></li>
-            </ul>
-        </li>
-        <li><a href="/Home/Dealer/index">经销商</a></li>
-        <li><a href="/Home/Unit/index">最小单位</a></li>
+        <li id="menu_project"><a href="/Home/Project/index">产品汇总</a></li>
+        <li id="menu_sale"><a href="/Home/Sale/index">销货汇总</a></li>
+        <li id="menu_buy"><a href="/Home/Buy/index">进货汇总</a></li>
+        <!--<li><a href="/Home/Sale/addSale">销售单</a></li>-->
+        <!--<li><a href="/Home/Buy/addBuy">进货单</a></li>-->
+        <li id="menu_dealer"><a href="/Home/Dealer/index">经销商</a></li>
+        <li id="menu_unit"><a href="/Home/Unit/index">最小单位</a></li>
         <!--<li><a data-toggle="tooltip" data-placement="bottom" title="网站暂无留言功能">留言</a></li>-->
     </ul>
 </aside>
@@ -79,33 +76,37 @@
                     <h1 class="page-header">添加</h1>
                     <form action="/Home/Unit/edit" method="post" autocomplete="off">
                         <div class="form-group">
-                            <label for="category-name">单位名称</label>
-                            <input type="text" id="category-name" name="name" class="form-control"
+                            <label for="unitName">单位名称</label>
+                            <input type="text" id="unitName" name="name" class="form-control"
                                    placeholder="在此处输入栏目名称" required autocomplete="off">
+                            <input type="hidden" name="unitId" value="" id="unitId"/>
                         </div>
-                        <button class="btn btn-primary" type="submit" name="submit">添加</button>
+                        <button class="btn btn-primary" type="submit" name="submit">提交</button>
                     </form>
                 </div>
                 <div class="col-md-7">
-                    <h1 class="page-header">管理 <span class="badge">3</span></h1>
+                    <h1 class="page-header">管理 <span class="badge"><?php echo ($count); ?></span></h1>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th style="text-align: center;"><span class="glyphicon"></span><span class="visible-lg">ID</span></th>
-                                <th style="text-align: center;"><span class="glyphicon"></span><span class="visible-lg">名称</span></th>
-                                <th style="text-align: center;"><span class="glyphicon"></span><span class="visible-lg">操作</span></th>
+                                <th style="text-align: center;"><span class="glyphicon"></span><span class="visible-lg">ID</span>
+                                </th>
+                                <th style="text-align: center;"><span class="glyphicon"></span><span class="visible-lg">名称</span>
+                                </th>
+                                <th style="text-align: center;"><span class="glyphicon"></span><span class="visible-lg">操作</span>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
-
 
                             <?php if(is_array($unitInfo)): foreach($unitInfo as $key=>$units): ?><tr>
                                     <td align="center"><?php echo ($units['id']); ?></td>
                                     <td align="center"><?php echo ($units['name']); ?></td>
                                     <td align="center">
                                         <!--<a href="/Home/Unit/edit/unitId/<?php echo ($units['id']); ?>">修改</a>-->
-                                        <a href="/Home/Unit/del/unitId/<?php echo ($units['id']); ?>" rel="1">删除</a>
+                                        <!--<a href="/Home/Unit/del/unitId/<?php echo ($units['id']); ?>" rel="1">删除</a>-->
+                                        <a onclick="edit('<?php echo ($units['id']); ?>','<?php echo ($units['name']); ?>')" rel="1">修改</a>
                                     </td>
                                 </tr><?php endforeach; endif; ?>
 
@@ -115,33 +116,26 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
-
-<script src="js/bootstrap.min.js"></script>
-<script src="js/admin-scripts.js"></script>
+<input type="hidden" id="page_type" value="unit">
+<script src="/Public/statics/js/bootstrap.min.js"></script>
+<script src="/Public/statics/js/admin-scripts.js"></script>
 <script>
-    //是否确认删除
-    $(function () {
-        $("#main table tbody tr td a").click(function () {
-            var name = $(this);
-            var id = name.attr("rel"); //对应id
-            if (event.srcElement.outerText === "删除") {
-                if (window.confirm("此操作不可逆，是否确认？")) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/Category/delete",
-                        data: "id=" + id,
-                        cache: false, //不缓存此页面
-                        success: function (data) {
-                            window.location.reload();
-                        }
-                    });
-                }
-                ;
-            }
-            ;
-        });
-    });
+    $('.nav-sidebar li').removeClass('active');
+    var type = $('#page_type').val();
+    if (typeof(type) == 'undefined') {
+        $('#index').addClass('active');
+    } else {
+        $('#menu_' + type).addClass('active');
+    }
+</script>
+<script>
+    function edit(id, name) {
+        $('#unitName').val(name);
+        $('#unitId').val(id);
+
+    }
 </script>
 </body>
 </html>

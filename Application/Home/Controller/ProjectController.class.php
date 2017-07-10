@@ -11,13 +11,14 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Page;
 
-class ProjectController extends Controller
+class ProjectController extends BaseController
 {
     public function index()
     {
         $projectName = I("search_name");
 
         $projectModel = M('project');
+        $unitModel = M('unit');
         $where = 'status = 1';
         if ($projectName) {
             $where .= " and name like '%" . $projectName . "%'";
@@ -31,6 +32,11 @@ class ProjectController extends Controller
         $show = $Page->show_self();// 分页显示输出
 
         $projectInfo = $projectModel->where($where)->order('id')->limit($Page->firstRow . ',' . $Page->listRows)->select(); // $Page->firstRow 起始条数 $Page->listRows 获取多少条
+
+        foreach ($projectInfo as $k => $v) {
+            $unitInfo = $unitModel->where(['id'=>$v['unit']])->find();
+            $projectInfo[$k]['unitName'] = $unitInfo['name'];
+        }
 
         $this->assign('page', $show);
 
@@ -135,7 +141,7 @@ class ProjectController extends Controller
         $projectInfo = [];
         if ($id > 0) {
             $projectInfo = $projectModel->where(['id' => $id])->find();
-            $unitInfo = $unitModel->where(['id'=>$projectInfo['unit']])->find();
+            $unitInfo = $unitModel->where(['id' => $projectInfo['unit']])->find();
             $projectInfo['unitName'] = $unitInfo['name'];
 
         }

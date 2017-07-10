@@ -49,7 +49,7 @@
                             <td align="center" class="article-title">{$projects['name']}</td>
                             <td align="center">{$projects['number']}</td>
                             <td align="center" class="hidden-sm">{$projects['standard']}</td>
-                            <td align="center" class="hidden-sm">{$projects['unit']}</td>
+                            <td align="center" class="hidden-sm">{$projects['unitName']}</td>
                             <td align="center">{$projects['remark']}</td>
                             <td align="center">
                                 <a href="/Home/Project/add/projectId/{$projects['id']}" style="color: blue">修改</a>
@@ -62,16 +62,7 @@
                 </table>
             </div>
             {$page}
-
-
-
-                    <!--<ul class="pagination pagenav">-->
-                        <!--<li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>-->
-                        <!--<li class="active"><a href="/Home/Project/index">1</a></li>-->
-                        <!--<li><a href="/Home/Project/index/2">2</a></li>-->
-                        <!--<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a></li>-->
-                    <!--</ul>-->
-
+            <input type="hidden" id="page_type" value="project">
         </div>
     </div>
 </section>

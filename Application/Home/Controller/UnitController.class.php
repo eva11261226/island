@@ -10,28 +10,17 @@ namespace Home\Controller;
 
 use Think\Controller;
 
-class UnitController extends Controller
+class UnitController extends BaseController
 {
     public function index()
     {
         $unitModel = M('unit');
         $unitInfo = $unitModel->select();
-        $this->assign('unitInfo',$unitInfo);
+        $count = count($unitInfo);
+        $this->assign('count', $count);
+        $this->assign('unitInfo', $unitInfo);
         $this->display('Unit/index');
     }
-
-    /**
-     * 新增、修改页面
-     */
-//    public function add()
-//    {
-//        $unitId = I('unitId');
-//        $unitModel = M('unit');
-//
-//        $uniInfo = $unitModel->find(['id'=>$unitId]);
-//
-//        $this->display('Unit/add');
-//    }
 
     /**
      * 新增、修改操作
@@ -42,21 +31,13 @@ class UnitController extends Controller
         $data['name'] = I("name");
         $data['add_time'] = date("Y-m-d H:i:s");
         $unitModel = M('unit');
-        $rel = $unitModel->add($data);
+        if ($unitId > 0) {
+            $rel = $unitModel->where(['id'=>$unitId])->save($data);
+        } else {
+            $rel = $unitModel->add($data);
+        }
 
         redirect(U('Unit/index'));
     }
 
-    /**
-     * 删除
-     */
-    public function del()
-    {
-        $unitId = I('unitId');
-        $unitModel = M('unit');
-
-        $rel = $unitModel->delete($unitId);
-
-        redirect(U('Unit/index'));
-    }
 }

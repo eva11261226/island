@@ -1,0 +1,100 @@
+<include file="Public:header"/>
+<link rel="stylesheet" type="text/css" href="/Public/statics/css/sale.css">
+<body class="user-select">
+<section class="container-fluid">
+
+    <div class="row" style="padding-left: 5px;">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main"
+             style="width:650px;height: 545px;padding: 0">
+            <h1 class="page-header">天津广源润泽科技有限公司</h1>
+            <div class="company_name">地址：天津市河西区洞庭路24号天津荣缘信通科技孵化器A207&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：13820189760
+            </div>
+            <div style="padding-bottom: 5px;">销售日期：{$saleInfo['add_time']}<h3 style="text-align: center">销售单</h3></div>
+            <div class="srinput">
+                <ul id='dealerInfo' style="display: none"></ul>
+            </div>
+            <table class="table table-hover" border="1">
+                <tr style="border-top:#000000">
+                    <td colspan="3">
+                        客户名称：{$saleInfo['dealer_name']}
+                    </td>
+                    <td colspan="3">
+                        联系人:{$dealerInfo['contact_name']}
+                    </td>
+                    <td colspan="2">
+                        地址：{$dealerInfo['address']}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th width="20%">商品全名</th>
+                    <th width="10%">规格</th>
+                    <th width="10%">单位</th>
+                    <th width="10%">数量</th>
+                    <th width="10%">单价</th>
+                    <th width="10%">金额</th>
+                    <th width="20%">结款方式</th>
+                    <th>备注</th>
+                </tr>
+
+                <foreach name="saleProjectInfo" item="projects">
+                    <tr>
+                        <td>{$projects['projectName']}</td>
+                        <td>{$projects['standard']}</td>
+                        <td>{$projects['unit']}</td>
+                        <td>{$projects['number']}</td>
+                        <td>{$projects['price']}</td>
+                        <td>{$projects['money']}</td>
+                        <td>{$projects['sale_type']}</td>
+                        <td>{$projects['remark']}</td>
+                    </tr>
+                </foreach>
+
+                <for start="0" end="$count">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </for>
+
+                <tr>
+                    <td>总计</td>
+                    <td colspan="2" id="chineseTotal"></td>
+                    <td>{$saleInfo['number_total']}
+                    </td>
+                    <td></td>
+                    <td>{$saleInfo['money_total']}</td>
+                    <td colspan='2'></td>
+                </tr>
+                <tr>
+                    <td>备注</td>
+                    <td colspan='7'>白联为仓库联，粉联为应收联，蓝联为财务联，黄联为客户联</td>
+                </tr>
+            </table>
+            <div>库管：　　　　　　
+                提货人：　　　　　　
+                收货人：　　　　　　
+                经办人：　　　　　　
+                交款人：　　　　　　
+            </div>
+        </div>
+    </div>
+</section>
+<include file="Public:footer"/>
+<script src="/Public/statics/js/convertCurrency.js"></script>
+<script src="/Public/statics/js/sale.js"></script>
+<script>
+    var money = "{$saleInfo['money_total']}";
+    var chinese = convertCurrency(money);
+    $('#chineseTotal').html(chinese);
+</script>
+
+
+</body>
+</html>

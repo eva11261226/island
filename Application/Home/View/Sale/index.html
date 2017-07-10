@@ -1,28 +1,51 @@
 <include file="Public:header"/>
+<link href="/Public/statics/css/bootstrap-datetimepicker.min.css">
+<link href="/Public/statics/css/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="all">
+
+<script src="/Public/statics/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/Public/statics/js/moment.js"></script>
+<script src="/Public/statics/js/daterangepicker.js"></script>
 <body class="user-select">
 <section class="container-fluid">
     <include file="Public:top"/>
     <div class="row">
         <include file="Public:menu"/>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
-            <h1 class="page-header">产品列表<span class="badge">共{$count}个产品</span></h1>
+            <h1 class="page-header">销售列表</h1>
 
             <ol class="breadcrumb">
                 <li><a href="/Home/Sale/add">
                     <button class="btn btn-info">新增</button>
                 </a>
-
                 </li>
             </ol>
 
             <form action="/Home/Sale/index" method="post" class="navbar-form " role="search">
+
+
+                <fieldset style="float: left">
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-prepend input-group">
+                                <input type="text" readonly style="width: 200px" name="reservation" id="reservation"
+                                       class="form-control" value="" placeholder="时间段"/>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                &nbsp;&nbsp;&nbsp;
+                <input type="hidden" name="start_time" value="{$startTime}" id="start_time">
+                <input type="hidden" name="end_time" value="{$endTime}" id="end_time">
+
                 <div class="input-group">
-                    <input type="text" class="form-control" name="search_name" value="{$projectName}" autocomplete="off" placeholder="搜索产品" maxlength="15">
+                    <input type="text" class="form-control" name="search_name" value="{$searchName}" autocomplete="off"
+                           placeholder="搜索公司名称" maxlength="15">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">搜索</button>
                     </span>
                 </div>
             </form>
+
 
             <h1 class="page-header"></h1>
             <div class="table-responsive">
@@ -30,30 +53,30 @@
                     <thead>
                     <tr>
                         <th style="text-align: center;"><span class="glyphicon"></span> <span
-                                class="visible-lg">产品名称</span></th>
-                        <th style="text-align: center;"><span class="glyphicon"></span> <span
-                                class="visible-lg">数量</span></th>
+                                class="visible-lg">公司名称</span></th>
+                        <!--<th style="text-align: center;"><span class="glyphicon"></span> <span-->
+                        <!--class="visible-lg">数量</span></th>-->
                         <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
-                                class="visible-lg">规格</span></th>
+                                class="visible-lg">总数量</span></th>
                         <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
-                                class="visible-lg">单位</span></th>
+                                class="visible-lg">总价格</span></th>
                         <th style="text-align: center;"><span class="glyphicon"></span> <span
-                                class="visible-lg">备注</span></th>
+                                class="visible-lg">销售时间</span></th>
                         <th style="text-align: center;"><span class="glyphicon"></span> <span
                                 class="visible-lg">操作</span></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <foreach name="projectInfo" item="projects">
+                    <foreach name="saleAllInfo" item="sales">
                         <tr>
-                            <td align="center" class="article-title">{$projects['name']}</td>
-                            <td align="center">{$projects['number']}</td>
-                            <td align="center" class="hidden-sm">{$projects['standard']}</td>
-                            <td align="center" class="hidden-sm">{$projects['unit']}</td>
-                            <td align="center">{$projects['remark']}</td>
+                            <td align="center" class="article-title">{$sales['dealer_name']}</td>
+                            <!--<td align="center">{$sales['number']}</td>-->
+                            <td align="center" class="hidden-sm">{$sales['number_total']}</td>
+                            <td align="center" class="hidden-sm">{$sales['money_total']}</td>
+                            <td align="center">{$sales['add_time']}</td>
                             <td align="center">
-                                <a href="/Home/Project/add/projectId/{$projects['id']}" style="color: blue">修改</a>
-                                <a href="/Home/Project/del/projectId/{$projects['id']}" style="color: red"
+                                <a href="/Home/Sale/detail/saleId/{$sales['id']}" style="color: blue">详情</a>
+                                <a href="/Home/Sale/del/saleId/{$sales['id']}" style="color: red"
                                    rel="1">删除</a>
                             </td>
                         </tr>
@@ -62,20 +85,12 @@
                 </table>
             </div>
             {$page}
-
-
-
-                    <!--<ul class="pagination pagenav">-->
-                        <!--<li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>-->
-                        <!--<li class="active"><a href="/Home/Project/index">1</a></li>-->
-                        <!--<li><a href="/Home/Project/index/2">2</a></li>-->
-                        <!--<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a></li>-->
-                    <!--</ul>-->
-
+            <input type="hidden" id="page_type" value="sale">
         </div>
     </div>
 </section>
 <include file="Public:footer"/>
+
 <script>
     //是否确认删除
     $(function () {
@@ -94,11 +109,29 @@
                         }
                     });
                 }
-                ;
             }
-            ;
+        });
+    });
+
+    var startTime = $('#start_time').val();
+    var endTime = $('#end_time').val();
+
+    if ((typeof(startTime) != 'undefined') && (startTime != '')) {
+        $('#reservation').val(startTime + ' - ' + endTime);
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#reservation').daterangepicker(null, function (start, end, label) {
+            var startTime = start.toStringAdd();
+            var endTime = end.toStringAdd();
+            $("#start_time").val(startTime);
+            $("#end_time").val(endTime)
         });
     });
 </script>
+
 </body>
 </html>

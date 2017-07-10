@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>进销存beta0.1管理系统</title>
-    <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="/Public/statics/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/style.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/login.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrapValidator.min.css">
@@ -56,19 +56,16 @@
     <div class="row">
         <aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
     <ul class="nav nav-sidebar">
-        <li class="active"><a href="/Home/Index/index">首页</a></li>
+        <li id="index" class="active"><a href="/Home/Index/index">首页</a></li>
     </ul>
     <ul class="nav nav-sidebar">
-        <li><a href="/Home/Project/index">产品汇总</a></li>
-        <li><a href="/Home/Sale/index">销货汇总</a></li>
-        <li><a class="dropdown-toggle" id="otherMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">销存汇总</a>
-            <ul class="dropdown-menu" aria-labelledby="otherMenu">
-                <li><a href="/Home/Sale/addSale">销售单</a></li>
-                <li><a data-toggle="modal" data-target="#areDeveloping">进货单</a></li>
-            </ul>
-        </li>
-        <li><a href="/Home/Dealer/index">经销商</a></li>
-        <li><a href="/Home/Unit/index">最小单位</a></li>
+        <li id="menu_project"><a href="/Home/Project/index">产品汇总</a></li>
+        <li id="menu_sale"><a href="/Home/Sale/index">销货汇总</a></li>
+        <li id="menu_buy"><a href="/Home/Buy/index">进货汇总</a></li>
+        <!--<li><a href="/Home/Sale/addSale">销售单</a></li>-->
+        <!--<li><a href="/Home/Buy/addBuy">进货单</a></li>-->
+        <li id="menu_dealer"><a href="/Home/Dealer/index">经销商</a></li>
+        <li id="menu_unit"><a href="/Home/Unit/index">最小单位</a></li>
         <!--<li><a data-toggle="tooltip" data-placement="bottom" title="网站暂无留言功能">留言</a></li>-->
     </ul>
 </aside>
@@ -116,7 +113,7 @@
                             <td align="center" class="article-title"><?php echo ($projects['name']); ?></td>
                             <td align="center"><?php echo ($projects['number']); ?></td>
                             <td align="center" class="hidden-sm"><?php echo ($projects['standard']); ?></td>
-                            <td align="center" class="hidden-sm"><?php echo ($projects['unit']); ?></td>
+                            <td align="center" class="hidden-sm"><?php echo ($projects['unitName']); ?></td>
                             <td align="center"><?php echo ($projects['remark']); ?></td>
                             <td align="center">
                                 <a href="/Home/Project/add/projectId/<?php echo ($projects['id']); ?>" style="color: blue">修改</a>
@@ -128,21 +125,21 @@
                 </table>
             </div>
             <?php echo ($page); ?>
-
-
-
-                    <!--<ul class="pagination pagenav">-->
-                        <!--<li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>-->
-                        <!--<li class="active"><a href="/Home/Project/index">1</a></li>-->
-                        <!--<li><a href="/Home/Project/index/2">2</a></li>-->
-                        <!--<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a></li>-->
-                    <!--</ul>-->
-
+            <input type="hidden" id="page_type" value="project">
         </div>
     </div>
 </section>
 <script src="/Public/statics/js/bootstrap.min.js"></script>
 <script src="/Public/statics/js/admin-scripts.js"></script>
+<script>
+    $('.nav-sidebar li').removeClass('active');
+    var type = $('#page_type').val();
+    if (typeof(type) == 'undefined') {
+        $('#index').addClass('active');
+    } else {
+        $('#menu_' + type).addClass('active');
+    }
+</script>
 <script>
     //是否确认删除
     $(function () {

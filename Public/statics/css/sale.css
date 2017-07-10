@@ -5,7 +5,7 @@
 
 .table > tbody > tr > td {
     border-top: #000000;
-    height: 40px;
+    height: 30px;
     padding: 0;
     text-align: center;
 }
@@ -16,10 +16,10 @@ input, button, select, textarea {
     text-align: center;
     width: 100%;
     height: 100%;
-    border-left:0;
-    border-top:0;
-    border-right:0;
-    border-bottom:1px
+    border-left: 0;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 1px
 }
 
 .page-header {
@@ -32,25 +32,27 @@ input, button, select, textarea {
     padding-bottom: 10px;
 }
 
-.srinput{position: relative;}
-.srinput .wdinput{
+/*.srinput{position: relative;}*/
+.srinput .wdinput {
     display: block;
     width: 150px;
     height: 20px;
     border-radius: 5px;
 }
-.srinput ul{
-    width: 300px;
+
+.srinput ul {
+    width: 211px;
     height: 150px;
-    overflow-x:hidden;
-    overflow-y:auto;
-    background-color: lightgrey;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #fffced;
     position: absolute;
-    top:40px;
-    left:379px;
+    top: 82px;
+    left: 89px;
 }
-.srinput ul li{
-    width: 125px;
+
+.srinput ul li {
+    /*width: 125px;*/
     height: 30px;
     line-height: 30px;
 }

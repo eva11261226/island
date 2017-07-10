@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>进销存beta0.1管理系统</title>
-    <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="/Public/statics/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/style.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/login.css">
-    <link rel="apple-touch-icon-precomposed" href="/Public/statics/img/icon/icon.png">
-    <link rel="shortcut icon" href="/Public/statics/img/icon/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrapValidator.min.css">
     <script src="/Public/statics/js/jquery-2.1.4.min.js"></script>
+    <script src="/Public/statics/js/bootstrapValidator.min.js"></script>
     <!--[if gte IE 9]>
     <script src="/Public/statics/js/jquery-1.11.1.min.js" type="text/javascript"></script>
     <script src="/Public/statics/js/html5shiv.min.js" type="text/javascript"></script>
