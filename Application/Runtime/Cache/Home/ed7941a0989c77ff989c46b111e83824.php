@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>进销存beta0.1管理系统</title>
-    <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="/Public/statics/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/style.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/login.css">
     <link rel="stylesheet" type="text/css" href="/Public/statics/css/bootstrapValidator.min.css">
@@ -56,19 +56,16 @@
     <div class="row">
         <aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
     <ul class="nav nav-sidebar">
-        <li class="active"><a href="/Home/Index/index">首页</a></li>
+        <li id="index" class="active"><a href="/Home/Index/index">首页</a></li>
     </ul>
     <ul class="nav nav-sidebar">
-        <li><a href="/Home/Project/index">产品汇总</a></li>
-        <li><a href="/Home/Sale/index">销货汇总</a></li>
-        <li><a class="dropdown-toggle" id="otherMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">销存汇总</a>
-            <ul class="dropdown-menu" aria-labelledby="otherMenu">
-                <li><a href="/Home/Sale/addSale">销售单</a></li>
-                <li><a data-toggle="modal" data-target="#areDeveloping">进货单</a></li>
-            </ul>
-        </li>
-        <li><a href="/Home/Dealer/index">经销商</a></li>
-        <li><a href="/Home/Unit/index">最小单位</a></li>
+        <li id="menu_project"><a href="/Home/Project/index">产品汇总</a></li>
+        <li id="menu_sale"><a href="/Home/Sale/index">销货汇总</a></li>
+        <li id="menu_buy"><a href="/Home/Buy/index">进货汇总</a></li>
+        <!--<li><a href="/Home/Sale/addSale">销售单</a></li>-->
+        <!--<li><a href="/Home/Buy/addBuy">进货单</a></li>-->
+        <li id="menu_dealer"><a href="/Home/Dealer/index">经销商</a></li>
+        <li id="menu_unit"><a href="/Home/Unit/index">最小单位</a></li>
         <!--<li><a data-toggle="tooltip" data-placement="bottom" title="网站暂无留言功能">留言</a></li>-->
     </ul>
 </aside>
@@ -99,6 +96,8 @@
                         <th style="text-align: center;"><span class="glyphicon"></span> <span
                                 class="visible-lg">名称</span></th>
                         <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">公司地址</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
                                 class="visible-lg">联系人姓名</span></th>
                         <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
                                 class="visible-lg">联系人电话</span></th>
@@ -113,6 +112,7 @@
                     <tbody>
                     <?php if(is_array($dealerInfo)): foreach($dealerInfo as $key=>$dealers): ?><tr <?php if($dealers['type'] == 1): ?>style="color: red"<?php else: ?>style="color: green"<?php endif; ?>>
                             <td align="center" class="article-title"><?php echo ($dealers['name']); ?></td>
+                            <td align="center"><?php echo ($dealers['address']); ?></td>
                             <td align="center"><?php echo ($dealers['contact_name']); ?></td>
                             <td align="center" class="hidden-sm"><?php echo ($dealers['contact_tel']); ?></td>
                             <td align="center" class="hidden-sm"><?php if($dealers['type'] == 1): ?>卖出<?php else: ?>买入<?php endif; ?></td>
@@ -127,11 +127,21 @@
                 </table>
             </div>
             <?php echo ($page); ?>
+            <input type="hidden" id="page_type" value="dealer">
         </div>
     </div>
 </section>
 <script src="/Public/statics/js/bootstrap.min.js"></script>
 <script src="/Public/statics/js/admin-scripts.js"></script>
+<script>
+    $('.nav-sidebar li').removeClass('active');
+    var type = $('#page_type').val();
+    if (typeof(type) == 'undefined') {
+        $('#index').addClass('active');
+    } else {
+        $('#menu_' + type).addClass('active');
+    }
+</script>
 <script>
     //是否确认删除
     $(function () {

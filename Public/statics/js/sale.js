@@ -1,7 +1,11 @@
 var dom = document.getElementById("company_name");
 dom.oninput = function () {
     $("#dealerInfo").show();
+    $('#dealerInfo').css("top", 161);
+    $('#dealerInfo').css("left", 90);
+    $('#dealerInfo').width(170);
     var param = $(this).val();
+
     $.ajax({
         type: 'GET',
         url: '/Home/Dealer/getLikeDealers/name/' + param,
@@ -13,7 +17,7 @@ dom.oninput = function () {
                 $("#dealerInfo").html("");
                 $("#siteId").val($(this)[0].id);
                 $("#siteName").val($(this)[0].name);
-                html += "<li onclick='getSiteId(" + $(this)[0].id + ",\"" + $(this)[0].name + "\" )'>" + $(this)[0].name + "</li>";
+                html += "<li style='text-align: center' onclick='getSiteId(" + $(this)[0].id + ",\"" + $(this)[0].name + "\" )'>" + $(this)[0].name + "</li>";
             });
             $("#dealerInfo").append(html);
         }
@@ -43,7 +47,7 @@ function getDealerInfo(id) {
             $(result).each(function (i) {
                 if ($(this)[0].contact_name) {
                     $("#contact_name").val($(this)[0].contact_name);
-                    $("#contact_tel").val($(this)[0].contact_tel);
+                    $("#contact_tel").val($(this)[0].address);
                 } else {
                     $("#contact_name").val('');
                     $("#contact_tel").val('');
@@ -60,35 +64,44 @@ function getDealerInfo(id) {
  */
 function testFun(id) {
     var projectName = $('#project_' + id).val();
-    $("#dealerInfo").show();
-    $('#dealerInfo').addClass('color:green');
-    $.ajax({
-        type: 'GET',
-        url: '/Home/Project/getLikeProjects/name/' + projectName,
-        data: '',
-        dataType: 'json',
-        success: function (result) {
-            var html = '';
-            $(result).each(function (i) {
-                $("#dealerInfo").html("");
+    if (typeof(projectName) == 'undefined' || projectName == '') {
+        $("#projectId_" + id).val('');
+        $('#tr_'+id).find('input').val('');
+    } else {
+        var top = (parseInt(id) - 1) * 30 + 228;
+        $("#dealerInfo").show();
+        $('#dealerInfo').css("top", top);
+        $('#dealerInfo').css("left", 1);
+        $('#dealerInfo').width(129);
+        $.ajax({
+            type: 'GET',
+            url: '/Home/Project/getLikeProjects/name/' + projectName,
+            data: '',
+            dataType: 'json',
+            success: function (result) {
+                var html = '';
+                $(result).each(function (i) {
+                    $("#dealerInfo").html("");
 
-                html += "<li onclick='getProjectId(" + id + "," + $(this)[0].id + ",\"" + $(this)[0].name + "\" )'>" + $(this)[0].name + "</li>";
-            });
-            $("#dealerInfo").append(html);
-        }
-    });
+                    html += "<li style='text-align: center' onclick='getProjectId(" + id + "," + $(this)[0].id + ",\"" + $(this)[0].name + "\" )'>" + $(this)[0].name + "</li>";
+                });
+                $("#dealerInfo").append(html);
+            }
+        });
+    }
+
 }
 
 function getProjectId(tdId, id, name) {
     var projectTd = 'project_' + tdId;
     $("#projectId_" + tdId).val(id);
     $("#" + projectTd).val(name);
-    getProjectInfo(tdId,id);
+    getProjectInfo(tdId, id);
     $("#dealerInfo").hide();
 }
 
 
-function getProjectInfo(tdId,id) {
+function getProjectInfo(tdId, id) {
     $.ajax({
         type: 'GET',
         url: '/Home/Project/getProjectInfo/id/' + id,
@@ -108,7 +121,7 @@ function getProjectInfo(tdId,id) {
  */
 function getTotal() {
     var total = 0;
-    for (var i = 1; i < 8; i++) {
+    for (var i = 1; i < 5; i++) {
         money = $('#money_' + i).val();
         if (typeof(money) == "undefined" || money == '') {
             mon = parseInt(0);
@@ -129,7 +142,7 @@ function getTotal() {
  */
 function getProjectNum() {
     var numberTotal = 0;
-    for (var i = 1; i < 8; i++) {
+    for (var i = 1; i < 5; i++) {
         number = $('#number_' + i).val();
         if (typeof(number) == "undefined" || number == '') {
             number = parseInt(0);

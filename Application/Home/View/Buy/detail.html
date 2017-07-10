@@ -1,0 +1,89 @@
+<include file="Public:header"/>
+<link rel="stylesheet" type="text/css" href="/Public/statics/css/sale.css">
+<body class="user-select">
+<section class="container-fluid">
+
+    <div class="row" style="padding-left: 5px;">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main"
+             style="width:80%;margin: auto 10% auto 10%">
+            <div style="padding-bottom: 5px;">销售日期：{$buyInfo['add_time']}<h3 style="text-align: center">销售单</h3></div>
+            <div class="srinput">
+                <ul id='dealerInfo' style="display: none"></ul>
+            </div>
+            <table class="table table-hover" border="1">
+                <tr style="border-top:#000000">
+                    <td colspan="3">
+                        客户名称：{$buyInfo['dealer_name']}
+                    </td>
+                    <td colspan="3">
+                        联系人:{$dealerInfo['contact_name']}
+                    </td>
+                    <td colspan="2">
+                        地址：{$dealerInfo['address']}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th width="20%">商品全名</th>
+                    <th width="10%">规格</th>
+                    <th width="10%">单位</th>
+                    <th width="10%">数量</th>
+                    <th width="10%">单价</th>
+                    <th width="10%">金额</th>
+                    <th width="20%">结款方式</th>
+                    <th>备注</th>
+                </tr>
+
+                <foreach name="buyProjectInfo" item="projects">
+                    <tr>
+                        <td>{$projects['projectName']}</td>
+                        <td>{$projects['standard']}</td>
+                        <td>{$projects['unit']}</td>
+                        <td>{$projects['number']}</td>
+                        <td>{$projects['price']}</td>
+                        <td>{$projects['money']}</td>
+                        <td>{$projects['buy_type']}</td>
+                        <td>{$projects['remark']}</td>
+                    </tr>
+                </foreach>
+
+                <for start="0" end="$count">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </for>
+
+                <tr>
+                    <td>总计</td>
+                    <td colspan="2" id="chineseTotal"></td>
+                    <td>{$buyInfo['number_total']}
+                    </td>
+                    <td></td>
+                    <td>{$buyInfo['money_total']}</td>
+                    <td colspan='2'></td>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+</section>
+<include file="Public:footer"/>
+<script src="/Public/statics/js/convertCurrency.js"></script>
+<script src="/Public/statics/js/buy.js"></script>
+<script>
+    var money = "{$buyInfo['money_total']}";
+    var chinese = convertCurrency(money);
+    $('#chineseTotal').html(chinese);
+</script>
+
+
+</body>
+</html>

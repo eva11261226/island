@@ -11,7 +11,7 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Page;
 
-class DealerController extends Controller
+class DealerController extends BaseController
 {
     public function index()
     {
@@ -65,6 +65,7 @@ class DealerController extends Controller
         $data = [];
         $data['name'] = I('name');
         $data['contact_name'] = I('contact_name');
+        $data['address'] = I('address');
         $data['contact_tel'] = I('contact_tel');
         $data['type'] = I('type');
         $data['remark'] = I('remark');
@@ -119,7 +120,7 @@ class DealerController extends Controller
 
         $where = "name like '%" . $name . "%'";
 
-        $dealers = $dealerModel->where($where)->field('id,name')->select();
+        $dealers = $dealerModel->where($where)->field('id,name,address')->select();
 
         $this->ajaxReturn($dealers);
     }

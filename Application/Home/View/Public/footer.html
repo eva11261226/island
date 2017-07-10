@@ -1,2 +1,11 @@
 <script src="/Public/statics/js/bootstrap.min.js"></script>
 <script src="/Public/statics/js/admin-scripts.js"></script>
+<script>
+    $('.nav-sidebar li').removeClass('active');
+    var type = $('#page_type').val();
+    if (typeof(type) == 'undefined') {
+        $('#index').addClass('active');
+    } else {
+        $('#menu_' + type).addClass('active');
+    }
+</script>

@@ -1,0 +1,135 @@
+<include file="Public:header"/>
+<link href="/Public/statics/css/bootstrap-datetimepicker.min.css">
+<link href="/Public/statics/css/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="all">
+
+<script src="/Public/statics/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/Public/statics/js/moment.min.js"></script>
+<script src="/Public/statics/js/daterangepicker.js"></script>
+<body class="user-select">
+<section class="container-fluid">
+    <include file="Public:top"/>
+    <div class="row">
+        <include file="Public:menu"/>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h1 class="page-header">进货列表</h1>
+
+            <ol class="breadcrumb">
+                <li><a href="/Home/Buy/add">
+                    <button class="btn btn-info">新增</button>
+                </a>
+                </li>
+            </ol>
+
+            <form action="/Home/Buy/index" method="post" class="navbar-form " role="search">
+
+
+                <fieldset style="float: left">
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-prepend input-group">
+                                <input type="text" readonly style="width: 200px" name="reservation" id="reservation" class="form-control" value="" placeholder="时间段"/>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                &nbsp;&nbsp;&nbsp;
+                <input type="hidden" name="start_time" value="" id="start_time">
+                <input type="hidden" name="end_time" value="" id="end_time">
+
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search_name" value="{$dealerName}" autocomplete="off"
+                           placeholder="搜索公司名称" maxlength="15">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
+
+
+
+            <h1 class="page-header"></h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">公司名称</span></th>
+                        <!--<th style="text-align: center;"><span class="glyphicon"></span> <span-->
+                        <!--class="visible-lg">数量</span></th>-->
+                        <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
+                                class="visible-lg">总数量</span></th>
+                        <th style="text-align: center;" class="hidden-sm"><span class="glyphicon"></span> <span
+                                class="visible-lg">总价格</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">销售时间</span></th>
+                        <th style="text-align: center;"><span class="glyphicon"></span> <span
+                                class="visible-lg">操作</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <foreach name="buyAllInfo" item="buys">
+                        <tr>
+                            <td align="center" class="article-title">{$buys['dealer_name']}</td>
+                            <!--<td align="center">{$buys['number']}</td>-->
+                            <td align="center" class="hidden-sm">{$buys['number_total']}</td>
+                            <td align="center" class="hidden-sm">{$buys['money_total']}</td>
+                            <td align="center">{$buys['add_time']}</td>
+                            <td align="center">
+                                <a href="/Home/buy/detail/buyId/{$buys['id']}" style="color: blue">详情</a>
+                                <a href="/Home/buy/del/buyId/{$buys['id']}" style="color: red"
+                                rel="1">删除</a>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+            {$page}
+            <input type="hidden" id="page_type" value="buy">
+        </div>
+    </div>
+</section>
+<include file="Public:footer"/>
+
+<script>
+    //是否确认删除
+    $(function () {
+        $("#main table tbody tr td a").click(function () {
+            var name = $(this);
+            var id = name.attr("rel"); //对应id
+            if (event.srcElement.outerText == "删除") {
+                if (window.confirm("此操作不可逆，是否确认？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Article/delete",
+                        data: "id=" + id,
+                        cache: false, //不缓存此页面
+                        success: function (data) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#reservation').daterangepicker(null, function(start, end, label) {
+            var startTime = start.toISOString();
+            startTime = startTime.substr(0,10);
+
+            var endTime = end.toISOString();
+            endTime = endTime.substr(0,10);
+
+            $("#start_time").val(startTime);
+            $("#end_time").val(endTime)
+        });
+    });
+</script>
+</body>
+</html>
